@@ -11,18 +11,26 @@
 #define Firebase_Host "greenhouse-3073d.firebaseio.com"
 #define Firebase_Auth "Wogx5BtFbmZ02JGlC8y83BGUlBjX0A8YORUNAOuX"
 
+//Config Swift LED
+#define SwitchtLed D1
+#define SwitchtLed2 D2
+
 // Explicit
 int countInt = 0;
-
+int SignalFirebase=0;
 void setup() 
 {
   Serial.begin(9600);
- 
+  
  // Connected Router
  
   WiFi.mode(WIFI_STA);
   WiFi.begin(WiFi_SSID,WiFi_Password);
   Serial.print("Connecting");
+
+  //Config Output
+  pinMode(SwitchtLed,OUTPUT);
+   pinMode(SwitchtLed2,OUTPUT);
 
   while(WiFi.status()!=WL_CONNECTED){
       Serial.print(".");
@@ -48,7 +56,19 @@ void loop() {
 
   // Post Value To FireBase
 
-  Firebase.setInt("TestNumner", countInt);
+  Firebase.setInt("FromNode/numberAnInt", countInt);
+
+ // Read Value From FireBase
+
+  SignalFirebase = Firebase.getInt("FromMobile/signal");
+    Serial.print(" SignalFibase ==> " );
+    Serial.println(SignalFirebase);
+   
+  if(SignalFirebase==1){
+      digitalWrite(SwitchtLed,HIGH);
+    } else{
+          digitalWrite(SwitchtLed,LOW);
+        }
   
   delay(1000);
 
