@@ -18,6 +18,7 @@
 // Explicit
 int countInt = 0;
 int SignalFirebase=0;
+int SignalFirebase2=0;
 void setup() 
 {
   Serial.begin(9600);
@@ -30,7 +31,7 @@ void setup()
 
   //Config Output
   pinMode(SwitchtLed,OUTPUT);
-   pinMode(SwitchtLed2,OUTPUT);
+  pinMode(SwitchtLed2,OUTPUT);
 
   while(WiFi.status()!=WL_CONNECTED){
       Serial.print(".");
@@ -58,16 +59,27 @@ void loop() {
 
   Firebase.setInt("FromNode/numberAnInt", countInt);
 
+
  // Read Value From FireBase
 
   SignalFirebase = Firebase.getInt("FromMobile/signal");
+  SignalFirebase2 = Firebase.getInt("FromAndriod/signal");
     Serial.print(" SignalFibase ==> " );
     Serial.println(SignalFirebase);
+
+    
    
   if(SignalFirebase==1){
       digitalWrite(SwitchtLed,HIGH);
     } else{
           digitalWrite(SwitchtLed,LOW);
+        }
+
+   if(SignalFirebase2==1){
+      digitalWrite(SwitchtLed2,HIGH);
+    }
+    else{
+          digitalWrite(SwitchtLed2,LOW);
         }
   
   delay(1000);
